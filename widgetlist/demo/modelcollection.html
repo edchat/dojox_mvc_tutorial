@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 0, async: 1"></script>
+		<script type="text/javascript">
+			require([
+				"dojo/_base/array",
+				"dojo/_base/lang",
+				"dojo/parser",
+				"dojo/Stateful",
+				"dojox/mvc/getStateful",
+				"dojox/mvc/StatefulArray",
+				"dijit/form/Button",
+				"dijit/form/CheckBox",
+				"dijit/form/TextBox",
+				"dojox/mvc/Output"
+			], function(array, lang, parser, Stateful, getStateful, StatefulArray){
+				newEntry = new Stateful({value: ""});
+
+				var uniqueId = 100003;
+
+				sa = getStateful([
+					{uniqueId: 100000, title: "Wash my car"},
+					{uniqueId: 100001, title: "Walk my dog", marked: true}
+				], {
+					getType: function(v){
+						return lang.isArray(v) ? "array" : "value";
+					},
+
+					getStatefulArray: function(a){
+						var sa = new StatefulArray([]);
+						sa.watchElements(function(idx, removals, adds){
+							array.forEach(removals, function(item){
+								sa.set("marked", sa.marked - !!item.marked);
+							});
+							array.forEach(adds, function(item){
+								item._markedSetter = function(value){
+									if(this.parent && (this.marked ^ value)){ // When the value is changed...
+										this.parent.set("marked", (this.parent.marked || 0) + (value ? 1 : -1)); // Update total number of marked entries reflecting the new state
+									}
+									this.marked = value;
+								};
+								sa.set("marked", (sa.marked || 0) + (!!item.marked - 0)); // Update total number of marked entries reflecting the initial state
+								item.parent = sa;
+								item.uniqueId = item.uniqueId || uniqueId++;
+							});
+						});
+						sa.push.apply(sa, array.map(a, function(item){
+							return new Stateful(item);
+						}));
+						return sa;
+					},
+
+					getStatefulValue: function(v){
+						return getStateful([v], this);
+					}
+				});
+
+
+				addEntry = function(){
+					sa.push(new Stateful({title: newEntry.value}));
+				};
+				removeEntry = function(uniqueId){
+					for(var i = sa.length - 1; i >= 0; --i){
+						if(sa[i].uniqueId == uniqueId){
+							sa.splice(i, 1);
+							return;
+						}
+					}
+				};
+
+				parser.parse();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<div>
+			Marked entries:
+			<span data-dojo-type="dojox/mvc/Output"
+			 data-dojo-props="value: at(sa, 'marked')"></span>
+		</div>
+		<div data-dojo-type="dojox/mvc/WidgetList"
+		 data-dojo-mixins="dojox/mvc/_InlineTemplateMixin"
+		 data-dojo-props="children: sa">
+			<script type="dojox/mvc/InlineTemplate">
+				<div>
+					<span data-dojo-type="dijit/form/CheckBox"
+					 data-dojo-props="checked: at(this.target, 'marked')"></span>
+					<span data-dojo-type="dijit/form/TextBox"
+					 data-dojo-props="value: at(this.target, 'title')"></span>
+					<input type="button"
+					 data-dojo-type="dijit/form/Button"
+					 data-dojo-props="label: 'Remove', uniqueId: at(this.target, 'uniqueId'), onClick: function(){ removeEntry(this.uniqueId); }">
+				</div>
+			</script>
+		</div>
+		<div>
+			<label for="add">Add an entry:</label>
+			<input id="add"
+			 data-dojo-type="dijit/form/TextBox"
+			 data-dojo-props="value: at(newEntry, 'value')">
+			<input type="button"
+			 data-dojo-type="dijit/form/Button"
+			 data-dojo-props="onClick: addEntry, label: 'Add'">
+		</div>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 0, async: 1"></script>
+		<script type="text/javascript">
+			require([
+				"dojo/_base/array",
+				"dojo/_base/declare",
+				"dojo/_base/lang",
+				"dojo/Stateful",
+				"dojox/mvc/getStateful",
+				"dojox/mvc/StatefulArray"
+			], function(array, declare, lang, Stateful, getStateful, StatefulArray){
+				var sa = getStateful({title: "Wash my car", marked: true}, {
+					getType: function(v){
+						return lang.isArray(v) ? "array" : "value";
+					},
+
+					getStatefulArray: function(a){
+						var sa = new StatefulArray([]);
+						sa.watchElements(function(idx, removals, adds){
+							array.forEach(removals, function(item){
+								sa.set("marked", sa.marked - !!item.marked);
+							});
+							array.forEach(adds, function(item){
+								item._markedSetter = function(value){
+									if(this.parent && (this.marked ^ value)){ // When the value is changed...
+										this.parent.set("marked", (this.parent.marked || 0) + (value ? 1 : -1)); // Update total number of marked entries reflecting the new state
+									}
+									this.marked = value;
+								};
+								sa.set("marked", (sa.marked || 0) + (!!item.marked - 0)); // Update total number of marked entries reflecting the initial state
+								item.parent = sa;
+							});
+						});
+						sa.push.apply(sa, array.map(a, function(item){
+							return new Stateful(item);
+						}));
+						return sa;
+					},
+
+					getStatefulValue: function(v){
+						return getStateful([v], this);
+					}
+				});
+
+				alert(sa.marked); // Shows "1"
+
+				sa.push({title: "Misc", marked: true});
+				alert(sa.marked); // Shows "2"
+
+				sa.pop();
+				alert(sa.marked); // Shows "1"
+			});
+		</script>
+	</head>
+	<body></body>
+</html>

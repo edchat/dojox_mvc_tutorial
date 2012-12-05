@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 0, async: 1"></script>
+		<script type="text/javascript">
+			require(["dojox/mvc/StatefulArray"], function(StatefulArray){
+				var a = new StatefulArray([0, 1, 2]); // Create a new StatefulArray
+				a.watchElements(function(idx, removals, adds){
+					if(!isNaN(idx)){
+						alert("At " + idx + ", removed " + (removals.length > 0 ? removals : "nothing") + " and added " + (adds.length > 0 ? adds : "nothing"));
+					}else{
+						alert("The whole array has been updated");
+					}
+				});
+
+				a.push(3); // Alert box pops up saying "At 3, removed nothing and added 3"
+				a.reverse(); // Alert box pops up saying "The whole array has been updated"
+				a.shift(); // Alert box pops up saying "At 0, removed 3 and added nothing"
+			});
+		</script>
+	</head>
+	<body></body>
+</html>
