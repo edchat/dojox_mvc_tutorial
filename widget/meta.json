@@ -1,0 +1,10 @@
+{
+	"title": "Working with widget",
+	"author": ["edchat, asudoh"],
+	"dojoVersion": "1.8",
+	"difficulty": "Intermediate",
+	"namespaces": ["dojo", "dijit", "dojox"],
+	"categories": ["MVC"],
+	"sponsor": "sitepen",
+	"available": true
+}

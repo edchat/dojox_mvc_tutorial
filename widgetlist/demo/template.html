@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 1, async: 1, deps: ['dojo/parser', 'dijit/form/TextBox', 'dojox/mvc/Output']"></script>
+		<script type="text/javascript">
+			array = [
+				{Serial: 100000, First: "Anne"},
+				{Serial: 100001, First: "Ben"},
+				{Serial: 100002, First: "Irene"}
+			];
+		</script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<div data-dojo-type="dojox/mvc/WidgetList"
+		 data-dojo-mixins="dojox/mvc/_InlineTemplateMixin"
+		 data-dojo-props="children: array">
+			<script type="dojox/mvc/InlineTemplate">
+				<div>
+					<span data-dojo-type="dojox/mvc/Output"
+					 data-dojo-props="value: at(this.target, 'Serial')"></span>: 
+					<span data-dojo-type="dijit/form/TextBox"
+					 data-dojo-props="value: at(this.target, 'First')"></span>
+				</div>
+			</script>
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 1, async: 1, deps: ['dojo/parser']"></script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<span data-dojo-id="model"
+		 data-dojo-type="dojo/Stateful"
+		 data-dojo-props="value: 'Foo'">
+		<input type="text"
+		 data-dojo-type="dijit/form/TextBox"
+		 data-dojo-props="value: at(model, 'value')">
+		<span data-dojo-type="dojox/mvc/Output"
+		 data-dojo-props="value: at(model, 'value')"></span>
+	</body>
+</html>

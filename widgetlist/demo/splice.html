@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 0, async: 1"></script>
+		<script type="text/javascript">
+			require([
+				"dojo/parser",
+				"dojo/Stateful",
+				"dojox/mvc/StatefulArray",
+				"dijit/form/Button",
+				"dijit/form/TextBox",
+				"dojox/mvc/Output",
+				"dojo/domReady!"
+			], function(parser, Stateful, StatefulArray){
+				var serial = 100003;
+				newEntry = new Stateful({value: ""});
+				array = new StatefulArray([
+					{Serial: 100000, First: "Anne"},
+					{Serial: 100001, First: "Ben"},
+					{Serial: 100002, First: "Irene"}
+				]);
+				addEntry = function(){
+					array.push(new Stateful({Serial: serial++, First: newEntry.value}));
+				};
+				removeEntry = function(serial){
+					for(var i = array.length - 1; i >= 0; --i){
+						if(array[i].Serial == serial){
+							array.splice(i, 1);
+							return;
+						}
+					}
+				};
+				parser.parse();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<div data-dojo-type="dojox/mvc/WidgetList"
+		 data-dojo-mixins="dojox/mvc/_InlineTemplateMixin"
+		 data-dojo-props="children: array">
+			<script type="dojox/mvc/InlineTemplate">
+				<div>
+					<span data-dojo-type="dojox/mvc/Output"
+					 data-dojo-props="value: at(this.target, 'Serial')"></span>: 
+					<span data-dojo-type="dijit/form/TextBox"
+					 data-dojo-props="value: at(this.target, 'First')"></span>
+					<input type="button"
+					 data-dojo-type="dijit/form/Button"
+					 data-dojo-props="label: 'Remove', Serial: at(this.target, 'Serial'), onClick: function(){ removeEntry(this.Serial); }">
+				</div>
+			</script>
+		</div>
+		<div>
+			<label for="add">Add an entry:</label>
+			<input id="add"
+			 data-dojo-type="dijit/form/TextBox"
+			 data-dojo-props="value: at(newEntry, 'value')">
+			<input type="button"
+			 data-dojo-type="dijit/form/Button"
+			 data-dojo-props="onClick: addEntry, label: 'Add'">
+		</div>
+	</body>
+</html>
+

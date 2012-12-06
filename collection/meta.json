@@ -1,0 +1,10 @@
+{
+	"title": "Working with collection",
+	"author": ["edchat, asudoh"],
+	"dojoVersion": "1.8",
+	"difficulty": "Intermediate",
+	"namespaces": ["dojo", "dojox"],
+	"categories": ["MVC"],
+	"sponsor": "sitepen",
+	"available": true
+}

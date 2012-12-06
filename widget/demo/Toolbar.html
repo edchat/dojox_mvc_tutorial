@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 1, async: 1, deps: ['dojo/parser']"></script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<span data-dojo-id="model"
+		 data-dojo-type="dojo/Stateful"
+		 data-dojo-props="menuLabel: 'Click me!', menuDisabled: false">
+		<div data-dojo-type="dijit/MenuBar">
+			<div data-dojo-type="dijit/MenuBarItem"
+			 data-dojo-props="label: at(model, 'menuLabel'), disabled: at(model, 'menuDisabled')">
+			</div>
+		</div>
+		<div>
+			<input id="check" type="checkbox"
+			 data-dojo-type="dijit/form/CheckBox"
+			 data-dojo-props="checked: at(model, 'menuDisabled')">
+			<label for="check">Disable the toolbar item</label>
+		</div>
+		<div>
+			<label for="text">Menu label</label>
+			<input id="text" data-dojo-type="dijit/form/TextBox"
+			 data-dojo-props="value: at(model, 'menuLabel')">
+		</div>
+	</body>
+</html>
