@@ -1,0 +1,2 @@
+In previous post in <code>dojox/mvc</code> series we discussed collection based on <code>dojox/mvc/StatefulArray</code> and <code>dojo/Stateful</code>.
+In this post we discuss creating widgets from collection. <code>dojox/mvc/</code> provides <code>dojox/mvc/WidgetList</code> that automatically creates child widgets from collection, and adds/removes child widgets as entries in collection are added/removed.

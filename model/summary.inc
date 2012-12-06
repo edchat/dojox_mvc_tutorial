@@ -1,0 +1,2 @@
+The data model (M in MVC) represents the core information that your application is being used to access and manipulate.
+For simple, non-collection type of data model, the Dojo Toolkit provides you with <code>dojo/Stateful</code>, a simple interface that let your application react to change in its data, and encapsulate the internal data format. <code>dojox/mvc</code> uses <code>dojo/Stateful</code> for simple, non-collection type of data model.

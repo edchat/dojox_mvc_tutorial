@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 0, async: 1"></script>
+		<script type="text/javascript">
+			require([
+				"dojo/_base/array",
+				"dojo/_base/lang",
+				"dojo/Stateful",
+				"dojox/mvc/getStateful",
+				"dojox/mvc/StatefulArray"
+			], function(array, lang, Stateful, getStateful, StatefulArray){
+				var a = getStateful([
+					{title: "Update my PC"},
+					"Walk my dog"
+				], {
+					getType: function(v){
+						return lang.isArray(v) ? "array" : v != null && {}.toString.call(v) == "[object Object]" ? "object" : "value";
+					},
+					getStatefulArray: function(a){
+						return new StatefulArray(array.map(a, function(item){ return getStateful(item, this); }, this));
+					},
+					getStatefulObject: function(o){
+						return new Stateful(o);
+					},
+					getStatefulValue: function(v){
+						return v;
+					}
+				});
+
+				a.watchElements(function(idx, removals, adds){
+					if(!isNaN(idx)){
+						alert("At " + idx + ", removed " + (removals.length > 0 ? removals : "nothing") + " and added " + (adds.length > 0 ? adds : "nothing"));
+					}else{
+						alert("The whole array has been updated");
+					}
+				}); // Can set element watch callback as the array is dojox/mvc/StatefulArray
+
+				a[0].watch(function(name, old, current){
+					alert("Property " + name + " has been changed to: " + current);
+				}); // Can set property watch callback as the 1st element is dojo/Stateful
+
+				alert(a[1]); // Shows "Walk my dog"
+				a[0].set("title", "Update my tablet"); // Alert box pops up saying "Property title has been changed to: Update my tablet"
+				a.unshift("Wash my car"); // Alert box pops up saying "At 0, removed nothing and added Wash my car"
+			});
+		</script>
+	</head>
+	<body></body>
+</html>

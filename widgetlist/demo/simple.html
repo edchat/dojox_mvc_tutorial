@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/claro/claro.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+		 data-dojo-config="parseOnLoad: 1, async: 1, deps: ['dojo/parser']"></script>
+		<script type="text/javascript">
+			array = [
+				{First: "Anne"},
+				{First: "Ben"},
+				{First: "Irene"}
+			];
+		</script>
+	</head>
+	<body class="claro">
+		<script type="dojo/require">at: "dojox/mvc/at"</script>
+		<div data-dojo-type="dojox/mvc/WidgetList"
+		 data-dojo-props="children: array"
+		 data-mvc-child-type="dijit/form/TextBox"
+		 data-mvc-child-props="value: at(this.target, 'First')"></div>
+	</body>
+</html>
+
